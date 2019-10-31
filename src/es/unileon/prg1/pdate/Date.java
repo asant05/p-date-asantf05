@@ -15,13 +15,21 @@ public class Date {
 		 */
 		
 		public Date(){
+			
+			
 			this.day=1;
 			this.month=1;
 			this.year=1;
 		}
 
 		
-		public Date(int day,int month,int year) {
+		public Date(int day,int month,int year) throws DateException {
+			if (day>0 && day<32) {
+				this.day=day;
+			}
+			else {
+				throw new DateException("Error en el dia introfucido");
+			}
 			this.day=day;
 			this.month=month;
 			this.year=year;
@@ -29,12 +37,12 @@ public class Date {
 
 
 		public boolean isSameYear(Date miFecha) {
-			boolean retorno=false;
-			if(this.year == miFecha.year) {
-			retorno=true;
-			}
-			return retorno;
+			return (this.year == miFecha.getYear);
 		}
+		public boolean isSameMonth(Date miFecha) {
+			return (this.month == miFecha.getMonth);
+		}
+		
 		
 		@Override
 		public String toString() {
@@ -47,8 +55,13 @@ public class Date {
 		}
 
 
-		public void setDay(int day) {
-			this.day = day;
+		public void setDay(int day) throws DateException {
+			if (day>0 && day<32) {
+				this.day=day;
+			}
+			else {
+				throw new DateException("Error en el dia introducido");
+			}
 		}
 
 
@@ -57,8 +70,13 @@ public class Date {
 		}
 
 
-		public void setMonth(int month) {
-			this.month = month;
+		public void setMonth(int month) throws DateException {
+			if (month>0 && month<13) {
+				this.month=month;
+			}
+			else {
+				throw new DateException("Error en el mes introducido");
+			}
 		}
 
 
@@ -68,7 +86,12 @@ public class Date {
 
 
 		public void setYear(int year) {
-			this.year = year;
+			if (year>0) {
+				this.year=year;
+			}
+			else {
+				throw new DateException("Error en el año introducido");
+			}
 		}
 		
 		
