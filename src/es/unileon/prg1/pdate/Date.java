@@ -16,20 +16,14 @@ public class Date {
 		
 		public Date(){
 			
-			
 			this.day=1;
 			this.month=1;
 			this.year=1;
 		}
 
 		
-		public Date(int day,int month,int year) throws DateException {
-			if (day>0 && day<32) {
-				this.day=day;
-			}
-			else {
-				throw new DateException("Error en el dia introfucido");
-			}
+		public Date(int day,int month,int year){
+			
 			this.day=day;
 			this.month=month;
 			this.year=year;
@@ -37,19 +31,22 @@ public class Date {
 
 
 		public boolean isSameYear(Date miFecha) {
-			return (this.year == miFecha.getYear);
+			return (this.year == miFecha.getYear());
 		}
 		public boolean isSameMonth(Date miFecha) {
-			return (this.month == miFecha.getMonth);
+			return (this.month == miFecha.getMonth());
 		}
-		
+		public boolean isSameDay(Date miFecha) {
+			return (this.day == miFecha.getDay());
+		}
 		
 		@Override
 		public String toString() {
 			return "Date [day=" + day + ", month=" + month + ", year=" + year + "]";
 		}
 
-
+		//Setters y getters
+		
 		public int getDay() {
 			return day;
 		}
@@ -85,7 +82,7 @@ public class Date {
 		}
 
 
-		public void setYear(int year) {
+		public void setYear(int year) throws DateException {
 			if (year>0) {
 				this.year=year;
 			}

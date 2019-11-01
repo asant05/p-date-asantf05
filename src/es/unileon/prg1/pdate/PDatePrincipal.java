@@ -16,11 +16,11 @@ public class PDatePrincipal{
 		Date today;
 
 		try {
-			today = new Date(1, 14, -2017);
+			today = new Date(1, 14, 2017);
 			System.out.println(today.toString());
 		}
 		catch (DateException e) {
-			System.out.println(e.getMessage());
+			System.out.print(e.getMessage());
 		}
 
 	}
