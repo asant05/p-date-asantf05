@@ -2,7 +2,7 @@ package es.unileon.prg1.pdate;
 
 public class PDatePrincipal{
 	public static void main(String[]args ) throws DateException{
-		Date myFecha= new Date();
+		Date myFecha= new Date(30,12,2019);
 		Date myFecha2= new Date(1,11,2019);
 	
 		
@@ -42,6 +42,7 @@ public class PDatePrincipal{
 		
 		
 		Date today;
+		
 
 		try {
 			today = new Date(90, 10, 2017);
@@ -51,6 +52,7 @@ public class PDatePrincipal{
 			System.out.println(e.getMessage());
 		}
 		
+	
 		
 	}
 	

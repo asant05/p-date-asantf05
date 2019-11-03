@@ -32,9 +32,36 @@ public class Date {
 			return day;
 		}
 
-
+			//Comprobar cuantos dias tiene cada mes
+			public int getDaysOfTheMonth(int month) {
+				int numeroDias=0;
+				switch(month) {
+					case 1:
+					case 3:
+					case 5:
+					case 7:
+					case 8:
+					case 10:
+					case 12:
+						numeroDias=31;
+						break;
+					case 4:
+					case 6:
+					case 9:
+					case 11:
+						numeroDias=30;
+						break;
+					case 2:
+						numeroDias=28;
+						break;
+					default:
+						numeroDias=-1;
+				}
+				return numeroDias;
+			}
+	
 		public void setDay(int day) throws DateException {
-			if (day>0 && day<diasDelMes(day)) {
+			if (day>0 && day<getDaysOfTheMonth(month)) {
 				this.day=day;
 			}
 			else {
@@ -72,8 +99,8 @@ public class Date {
 			
 	
 
-		/**If staments, simplificados despues con booleans
-		public ifStaments{
+		//If staments, simplificados despues con booleans
+		public void ifStaments(int day,int month, int year){
 			if(day<0 ||day>31) {
 				System.out.println("Error en el dia introducido");
 			}
@@ -84,7 +111,7 @@ public class Date {
 				System.out.println("Error en el año introducido");
 			}
 		}
-		**/
+		
 		
 		//booleans
 		public boolean isSameYear(Date miFecha) {
@@ -142,37 +169,10 @@ public class Date {
 			System.out.println("Mes: "+month);
 		}
 		
-		//Comprobar cuantos dias tiene cada mes
-			public int getDaysOfTheMonth(int month) {
-				int numeroDias=0;
-				switch(month) {
-					case 1:
-					case 3:
-					case 5:
-					case 7:
-					case 8:
-					case 10:
-					case 12:
-						numeroDias=31;
-						break;
-					case 4:
-					case 6:
-					case 9:
-					case 11:
-						numeroDias=30;
-						break;
-					case 2:
-						numeroDias=28;
-						break;
-					default:
-						numeroDias=-1;
-				}
-				return numeroDias;
-			}
-			
+		
 		//Metodo para chequear si los dias son correctos
 			public boolean rigthDay(int day) {
-				if (day>0 && day<=getDaysOfTheMonth()) {
+				if (day>0 && day<=getDaysOfTheMonth(day)) {
 					return true;
 				}
 				else {
@@ -182,7 +182,7 @@ public class Date {
 		
 		//Para saber en que estacion está la fecha introducida
 		public String getSeason(){
-			String estacion="";
+			String estacion;
 			switch(month) {
 				case 1:
 				case 2:
@@ -212,21 +212,23 @@ public class Date {
 		
 		//Metodo para saber cuantos meses quedan para el fin de año
 		public String getMonthsLeft(int month) {
+			StringBuffer cadena=new StringBuffer();
 			for(int i=month+1;i<=12;i++) {
-				cadena.append(getMonthName()+" ");
+				cadena.append(getNameOfMonth()+" ");
 			}
+			return cadena.toString();
 		}
 		
 		//Metodo para escribir en un  string la fecha
 		public String printDate(int day, int month, int year) {
-			String printDate=" La fecha es : "+day+" / "+month+" / "+year);
+			String printDate=" La fecha es : "+day+" / "+month+" / "+year;
 			return printDate;
 		}
 		
 		//Metodo para devolver todas las fechas hasta el final del mes
 			//Tomorrow
 			public Date tomorrow() {
-				Date tomorrow=" ";
+				Date tomorrow = null;
 				int d, m, y;
 				
 				d=this.day;
@@ -234,7 +236,7 @@ public class Date {
 				y=this.year;
 				
 				d++;
-				if(d>this.daysOfTheMonth(month)) {
+				if(d>this.getDaysOfTheMonth(month)) {
 					d=1;
 					m++;
 					if(m>12) {
@@ -248,80 +250,131 @@ public class Date {
 				catch(DateException e) {
 					e.printStackTrace();
 				}
-				return tomorrow
+				return tomorrow;
 			}
 		
 		
 		public String getDaysLeftOfMonth() {
-			Date Auxiliar= tomorrow();
+			Date auxiliar= tomorrow();
 			StringBuffer daysLeft =new StringBuffer();
 			try {
 				for(int i=auxiliar.getDay();rigthDay(i);i++) {
 					auxiliar.setDay(i);
-					daysLeft.append(auxiliar.toString+ " ");
+					daysLeft.append(auxiliar.toString()+ " ");}
 				}
 				catch(DateException e) {
 					System.err.println("Date.getDaysLeftOfMonth: "+e.getMessage());
 				}
 				return daysLeft.toString();
+			
 			}
-		}
 		
 		//Metodo para saber que meses tienen el mismo numero de dias
 		
+		public void printMonthsWhitTheSameNumberOfDays(int month){
+			StringBuffer cadena=new StringBuffer();
+			cadena.append("Todos estos mesess tienen el mismo numero de dias : ");
+			for (int i=1;i<=12;i++) {
+				if(getDaysOfTheMonth(i)==getDaysOfTheMonth(month)) {
+					cadena.append(getNameOfMonth()+ " ");
+				}
+			}
+			System.out.println(cadena.toString());
+		}
 		
+		//Metodo para contar el numero de dias que han pasado desde el primer dia del año
+		public int daysPast() throws DateException {
+			int daysPast=0;
+			Date temp=new Date(1,1,year);
+			for(int i=1;i<month;i++) {
+				daysPast+=getDaysOfTheMonth(i);
+				temp.setMonth(i+1);
+			}
+			daysPast=daysPast+day-1;
+			return daysPast;
+		}
 		
+		//Metodo para contar el numero de intentos necesarios para al azar deicr la misma fecha dentro de un año
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		//Para saber en que dia de la semana nos hallamos
-		
+			//Metodo con while
+			public int numberOfAttemptsWhile(){
+				int number=0;
+				int day=0;
+				int month=0;
+				int year=0;
+				
+				while(isSame(day,month,year)) {
+					month=(int)(Math.random()*12)+1;
+					day=(int)(Math.random()*this.getDaysOfTheMonth(month))+1;
+					year=year;
+					number++;
+				}
+				return number;
+			}
+			
+			//Metodo con do-while
+			public int numberOfAttemptsDo(){
+				int number=0;
+				int day=0;
+				int month=0;
+				int year=0;
+				
+				do {
+					month=(int)(Math.random()*12)+1;
+					day=(int)(Math.random()*this.getDaysOfTheMonth(month))+1;
+					year=year;
+					number++;
+				}
+				while(isSame(day,month,year));
+				return number;
+			}
+			
+		//Metodo para saber que dia de la semana es si sabemos el dia de la semana del primer dia del año
+			
 		public String diaDeLaSemana(int day){
-			String diaSemana=" ";
+			String diaDeLaSemana=" ";
 			switch(day) {
 				case 1:
-					diaSemana="Lunes";
+					diaDeLaSemana="Lunes";
 					break;
 				case 2:
-					diaSemana="Martes";
+					diaDeLaSemana="Martes";
 					break;
 				case 3:
-					diaSemana="Miercoles";
+					diaDeLaSemana="Miercoles";
 					break;
 				case 4:
-					diaSemana="Jueves";
+					diaDeLaSemana="Jueves";
 					break;
 				case 5:
-					diaSemana="Viernes";
+					diaDeLaSemana="Viernes";
 					break;
 				case 6:
-					diaSemana="Sabado";
+					diaDeLaSemana="Sabado";
 					break;
 				case 7:
-					diaSemana="Domingo";
+					diaDeLaSemana="Domingo";
 					break;
 				default:
-					diaSemana="Numero de dia introducido incorrectamente";
+					diaDeLaSemana="Numero de dia introducido incorrectamente";
 					break;
 					
 			}
-			return diaSemana;
+			
+			return diaDeLaSemana;
 		}
 		
-		@Override
+		public String dayOfWeek(int day) throws DateException {
+			int name;
+			name=(daysPast()%7 + day)%7;
+			return diaDeLaSemana(name);
+		}
+		
+		
 		public String toString() {
 			return "Date [day=" + day + ", month=" + month + ", year=" + year + "]";
 		}
 
 		
-
-				
-				
 
 }
